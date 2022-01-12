@@ -27,4 +27,4 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
-          path: apk/app-release.apk
+          path: intro/app-release.apk
