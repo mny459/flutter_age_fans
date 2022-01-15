@@ -1,8 +1,9 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_age_fans/core/constant/ani_color.dart';
+import 'package:flutter_age_fans/core/constant/routers.dart';
 import 'package:flutter_age_fans/core/services/navigation/navigation_helper.dart';
+import 'package:flutter_age_fans/ui/widgets/stateful/ani_controller/better_player_material_controls.dart';
 import 'package:logging/logging.dart';
 import 'package:orientation/orientation.dart';
 
@@ -41,32 +42,24 @@ class _AniPlayViewState extends State<AniPlayView> {
           fullScreenByDefault: true,
           allowedScreenSleep: false,
           aspectRatio: 16 / 9,
-          errorBuilder: (BuildContext context, String? errorMessage) {
-            _logger.severe('errorMessage = $errorMessage');
-            return Stack(
-              children: [
-                Positioned(
-                  left: 16,
-                  top: 16,
-                  child: IconButton(
-                      onPressed: () {
-                        NavigationHelper.pop();
-                      },
-                      icon: const Icon(Icons.close, color: AniColor.textFourthColor)),
-                ),
-                Positioned.fill(
-                  child: Center(
-                    child: Text(
-                      '$errorMessage',
-                      style: const TextStyle(color: AniColor.textFourthColor),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
+          controlsConfiguration: BetterPlayerControlsConfiguration(
+            showControlsOnInitialize: false,
+            playerTheme: BetterPlayerTheme.custom,
+            customControlsBuilder: (controller, onPlayerVisibilityChanged) {
+              return AniPlayerControls(
+                onControlsVisibilityChanged: onPlayerVisibilityChanged,
+                controlsConfiguration:
+                    controller.betterPlayerControlsConfiguration,
+                onQuite: onQuite,
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  void onQuite() {
+    NavigationHelper.popToPage(context, RouterName.aniDetail);
   }
 }

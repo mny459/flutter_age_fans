@@ -92,7 +92,7 @@ class AgeFansLoginRequest extends AgeFansRequest {
   AgeFansLoginRequest(String username, String password) {
     addParam('username', username);
     addParam('password', password);
-    addHeader('content-typ', 'application/x-www-form-urlencoded');
+    addHeader('content-type', 'application/x-www-form-urlencoded');
   }
 
   @override
@@ -108,7 +108,7 @@ class AgeFansRegisterRequest extends AgeFansRequest {
     addParam('username', username);
     addParam('password1', password);
     addParam('password2', password);
-    addHeader('content-typ', 'application/x-www-form-urlencoded');
+    addHeader('content-type', 'application/x-www-form-urlencoded');
   }
 
   @override
@@ -225,5 +225,5 @@ class AgeFansAddOrDelCollectionRequest extends AgeFansRequest {
   }
 
   @override
-  String get path => add ? '/v2/collect_add':'/v2/collect_del';
+  String get path => add ? '/v2/collect_add' : '/v2/collect_del';
 }

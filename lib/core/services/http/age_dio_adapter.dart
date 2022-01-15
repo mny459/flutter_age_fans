@@ -85,7 +85,7 @@ class ApiInterceptor extends InterceptorsWrapper {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     _log.info(
-        'response ${response.requestOptions.path} data < ${response.data}');
+        'response data < ${response.data} from ${response.requestOptions.path}');
     super.onResponse(response, handler);
   }
 }

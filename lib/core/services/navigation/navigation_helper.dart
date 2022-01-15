@@ -63,9 +63,9 @@ class NavigationHelper {
     if (url == null || url.isEmpty) {
       return;
     }
-    if (PlatformHelper.isMobile()) {
-      return navPage(WanWeb(url: url), pageName: RouterName.webView);
-    }
+    // if (PlatformHelper.isMobile()) {
+    //   return navPage(WanWeb(url: url), pageName: RouterName.webView);
+    // }
     await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 
@@ -92,7 +92,7 @@ class NavigationHelper {
   }
 
   static Future navPlayView(String url) async {
-    if (url.startsWith('!http')) {
+    if (!url.startsWith('http')) {
       showToast(S.of(NavigationHelper.context).invalidPlayUrl);
       return;
     }
@@ -100,9 +100,7 @@ class NavigationHelper {
     if (PlatformHelper.isMobile()) {
       return navPage(AniPlayView(decodeUrl), pageName: RouterName.aniPlay);
     } else {
-      await canLaunch(decodeUrl)
-          ? await launch(decodeUrl)
-          : throw 'Could not launch $url';
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
     }
   }
 

@@ -52,21 +52,29 @@ class _AniDetail extends ViewModelWidget<AniDetailViewModel> {
 
   @override
   Widget build(BuildContext context, AniDetailViewModel model) {
+    var defaultPlayIndex = int.parse(model.aniDetail!.aniInfo.defPlayIndex);
     var onlineEpisode = model.aniDetail!.aniInfo.onlineEpisode;
-    // _logger.severe('_AniDetail ${onlineEpisode.length}');
-    onlineEpisode.removeWhere((element) {
-      // _logger.severe('_AniDetail ${element.length} ${element.toString()}');
-      return element.isEmpty;
-    });
-    // _logger.severe('_AniDetail ${onlineEpisode.length}');
+    final defaultList = onlineEpisode[defaultPlayIndex];
+    // _logger.severe('初始播放位置 - $defaultPlayIndex ${onlineEpisode.length}');
+    final newList = <List<OnlineEpisodeBean>>[];
+    var newDefaultPlayIndex = 0;
+    for (var list in onlineEpisode) {
+      if (list.isNotEmpty) {
+        newList.add(list);
+        if (list == defaultList) {
+          newDefaultPlayIndex = newList.length - 1;
+        }
+      }
+    }
+    defaultPlayIndex = newList.indexOf(defaultList);
+    // _logger.severe('修正以后的播放位置 ${newList.length}- ${newDefaultPlayIndex}');
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
           child: _BasicInfo(),
         ),
         SliverToBoxAdapter(
-          child: _OnlineRes(
-              onlineEpisode, int.parse(model.aniDetail!.aniInfo.defPlayIndex)),
+          child: _OnlineRes(newList, newDefaultPlayIndex),
         ),
         SliverToBoxAdapter(
           child: _PanRes(),
@@ -343,7 +351,7 @@ class _OnlineResState extends State<_OnlineRes>
   @override
   void initState() {
     super.initState();
-    // _index = widget.defPlayIndex;
+    _index = widget.defPlayIndex;
     _logger.severe('${widget.defPlayIndex}');
     _tabController = TabController(
         initialIndex: _index, length: widget._onLineList.length, vsync: this)
@@ -405,8 +413,8 @@ class _OnlineResState extends State<_OnlineRes>
               controller: _tabController,
               children: List.generate(
                 widget._onLineList.length,
-                (index) {
-                  final list = widget._onLineList[index];
+                (tabIndex) {
+                  final list = widget._onLineList[tabIndex];
                   return GridView.builder(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -420,6 +428,7 @@ class _OnlineResState extends State<_OnlineRes>
                             mainAxisSpacing: 10),
                     itemBuilder: (context, index) {
                       var bean = list[index];
+                      // _logger.severe('tabIndex = $tabIndex itemIndex = ${bean.toJson()}');
                       return GestureDetector(
                         onTap: () {
                           context
@@ -502,22 +511,23 @@ class _PanRes extends ViewModelWidget<AniDetailViewModel> {
         }),
       );
     } else {
-      resWidget = Container(
-        height: 48,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              model.aniDetail!.aniInfo.resPan,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AniColor.textFourthColor,
-              ),
-            ),
-          ],
-        ),
-      );
+      return Container();
+      // resWidget = Container(
+      //   height: 48,
+      //   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       Text(
+      //         model.aniDetail!.aniInfo.resPan,
+      //         style: const TextStyle(
+      //           fontSize: 14,
+      //           color: AniColor.textFourthColor,
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // );
     }
 
     return Container(

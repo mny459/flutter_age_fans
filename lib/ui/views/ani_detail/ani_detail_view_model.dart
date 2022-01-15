@@ -53,13 +53,15 @@ class AniDetailViewModel extends BaseViewModel {
 
   void play(String playId, String playVid) {
     _repository.fetchVideoInfo(playId, playVid).then((value) {
-      NavigationHelper.navPlayView(value.vUrl);
+      if (playId.contains('ttm3p')) {
+        NavigationHelper.navWebView('${value.pUrlF}${value.vUrl}');
+      } else {
+        NavigationHelper.navPlayView(value.vUrl);
+      }
     });
   }
 
   void collect() {
-    _repository.addOrDelCollect(true, _cid).then((value) {
-
-    });
+    _repository.addOrDelCollect(true, _cid).then((value) {});
   }
 }
