@@ -1,3 +1,8 @@
+[![Github Actions](https://github.com/mny459/flutter_age_fans/workflows/CI/badge.svg)](https://github.com/mny459/flutter_age_fans/actions)
+[![GitHub stars](https://img.shields.io/github/stars/mny459/flutter_age_fans.svg)](https://github.com/mny459/flutter_age_fans/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/mny459/flutter_age_fans.svg)](https://github.com/mny459/flutter_age_fans/network)
+[![GitHub issues](https://img.shields.io/github/issues/mny459/flutter_age_fans.svg)](https://github.com/mny459/flutter_age_fans/issues)
+
 # AGE动漫第三方客户端
 这是一款基于 Flutter 编写的 [AGE动漫](https://www.agefans.live/) 第三方客户端，主要目的是为了巩固自身的 Flutter 技能
 
