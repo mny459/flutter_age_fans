@@ -8,7 +8,8 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    name: Build
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -20,6 +21,7 @@ jobs:
       - uses: subosito/flutter-action@v2.1.0
         with:
           channel: 'stable'
+          flutter-version: '2.8.1'
       - run: flutter packages get
       - run: flutter build apk --release
       - run: ls
@@ -27,4 +29,31 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
+          name: apk
           path: intro/app-release.apk
+          
+      - name: Download APK from build
+        uses: actions/download-artifact@v2
+        with:
+          name: apk
+      - name: Display structure of downloaded files
+        run: ls -R
+        
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+      - name: Upload Release APK
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/zip
