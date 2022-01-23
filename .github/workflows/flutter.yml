@@ -5,6 +5,9 @@ on:
     tags:
       - v*
     branches: [ master ]
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.jpeg"
 
 jobs:
   build:
